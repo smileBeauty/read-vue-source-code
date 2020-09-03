@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <div id="test" style="background-color: aqua; padding: 50px;">
+    <div id="test2" style="background-color: blueviolet;">111</div>
+  </div>
+  <script>
+    var dom = document.getElementById('test');
+    var dom2 = document.getElementById('test2');
+    var opt = {
+      capture: true
+    };
+    dom.addEventListener('click', function(e) {
+      console.log(e)
+      console.log(1)
+    }, opt);
+    dom.addEventListener('click', function(e) {
+      console.log(2)
+    }, { capture: false });
+    dom2.addEventListener('click', function(e) {
+      console.log(3)
+    }, opt);
+    dom2.addEventListener('click', function(e) {
+      console.log(4)
+    }, { capture: false });
+  </script>
+</body>
+</html>

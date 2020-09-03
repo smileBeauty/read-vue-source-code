@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>readVueCode</title>
+  <script src="./vue.js"></script>
+  <style>
+    .componentA{
+      width: 100%;
+      height: 100px;
+      background-color: aqua;
+    }
+  </style>
+  <style>
+    .componentB{
+      width: 100%;
+      height: 100px;
+      background-color: cadetblue;
+    }
+  </style>
+</head>
+<body>
+  <div id="app">
+    <p style="color: red;">一共 11351 行</p>
+    <p style="color: red;">上次读到 8717 行</p>
+    <p style="color: red;">还剩 2634 行</p>
+    <p style="color: red;">pppp<span>ssss<span>pppp<span>aaaa<span>nnnnnn</span>aaaa</span>pppp</span>ssss</span>pppp</p>
+    <p>{{message}}</p>
+    <p>{{messageCom}}</p>
+    <p>testMixin:{{message2}}</p>
+    <p>_mine:{{$data._mine}}</p>
+    <p>$mine:{{$data.$mine}}</p>
+    <component-a :name="message" :age="age"></component-a>
+    <component-b v-model="message"></component-b>
+    <ul>
+      <li v-for="(li, index) in arr" :key="li">{{ li }}</li>
+    </ul>
+    <a href="javascript:void(0)" @click="add">add</a>
+    <p></p>
+    <a href="javascript:void(0)" @click="minus">minus</a>
+    <p></p>
+    <a href="javascript:void(0)" @click="modifyMine">修改_mine</a>
+    <p></p>
+    <a href="javascript:void(0)" @click="modifyMine2">修改$mine</a>
+  </div>
+  <script>
+    const componentA = {
+      template: '<div class="componentA">{{name}}<div v-if="showFlag">123</div></div>',
+      props: {
+        name: {
+          type: String,
+          default: 'rytan'
+        },
+        showFlag: {
+          type: Boolean,
+          default: true
+        }
+      }
+    }
+    const componentB = {
+      template: '<div class="componentB">{{value}}<div @click="addB" class="b_div">b-add</div></div>',
+      props: {
+        value: ''
+      },
+      methods: {
+        addB () {
+          this.$emit('input', 'mmmmrrrr')
+        }
+      }
+    }
+    const testMixin = {
+      data: {
+        message2: 'testMixin-message2'
+      }
+    }
+    var __myVue = new Vue({
+      el: '#app',
+      mixins: [testMixin],
+      data: {
+        age: 18,
+        _mine: 'mine_',
+        $mine: 'mine$',
+        message: 'zhangsan',
+        arr: ['zhangsan', 'lisi', 'wangwu']
+      },
+      computed: {
+        messageCom () {
+          return this.message + ' computed'
+        }
+      },
+      created () {
+        this.$on('hook:init', () => {
+          console.log('123123123')
+        })
+        this.$on(['a', 'b', 'c'], () => {
+          console.log('123123123')
+        })
+      },
+      methods: {
+        add () {
+          this.message += 1
+        },
+        minus () {
+          this.message += 2
+        },
+        modifyMine () {
+          this._data._mine += 1
+        },
+        modifyMine2 () {
+          this._data.$mine += 1
+        }
+      },
+      watch: {
+        message (val, oldVal) {
+          // console.log(arguments)
+        }
+        /* message: {
+          handler (val, oldVal) {
+
+          },
+          // before: true,
+          // lazy: true,
+          // sync: true,
+          deep: true
+        } */
+      },
+      components: {
+        componentA,componentB
+      }
+    })
+  </script>
+</body>
+</html>
